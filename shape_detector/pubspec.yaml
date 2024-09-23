@@ -43,7 +43,14 @@ dependencies:
   path_provider: ^2.0.11
   path: ^1.8.2
   image: ^4.2.0
+  http: ^0.13.5
+  # flutter_stl: ^0.1.2 
+  # flutter_3d_obj: ^0.0.5
+  # arkit_flutter_plugin: ^0.6.0
+  model_viewer_plus: ^1.7.0
 
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
