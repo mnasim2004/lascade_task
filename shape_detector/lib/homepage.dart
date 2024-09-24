@@ -370,6 +370,7 @@
 //     }
 //   }
 // }
+//
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_detector/api.dart';
@@ -389,8 +390,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (cameraController == null ||
-        cameraController?.value.isInitialized == false) {
+    if (cameraController == null || cameraController?.value.isInitialized == false) {
       return;
     }
 
@@ -415,8 +415,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Widget _buildUI() {
-    if (cameraController == null ||
-        cameraController?.value.isInitialized == false) {
+    if (cameraController == null || cameraController?.value.isInitialized == false) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -439,20 +438,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 XFile picture = await cameraController!.takePicture();
                 String imagePath = picture.path;
                 print('Picture taken at: $imagePath'); // Debug print
-                String? objFilePath = await sendImageAndReceiveOBJ(
-                    imagePath); // Use the updated function
+                String? plbFilePath = await sendImageAndReceivePLB(imagePath); // Use the updated function
 
-                print('OBJ file path received: $objFilePath'); // Debug print
+                print('PLB file path received: $plbFilePath'); // Debug print
 
-                if (objFilePath != null && objFilePath.isNotEmpty) {
-                  print(
-                      'Displaying OBJ file with path: $objFilePath'); // Debug print
+                if (plbFilePath != null && plbFilePath.isNotEmpty) {
+                  print('Displaying PLB file with path: $plbFilePath'); // Debug print
                   setState(() {
-                    _modelPath = objFilePath; // Store the path for displaying
+                    _modelPath = plbFilePath; // Store the path for displaying
                   });
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to receive OBJ file.')),
+                    SnackBar(content: Text('Failed to receive PLB file.')),
                   );
                 }
               },
@@ -467,7 +464,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'OBJ File Path:\n$_modelPath', // Updated to OBJ
+                  'PLB File Path:\n$_modelPath', // Updated to PLB
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
@@ -478,26 +475,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
+  int currentCameraIndex = 0; // Track the current camera index
+
   Future<void> _setupCameraController() async {
     List<CameraDescription> _cameras = await availableCameras();
     if (_cameras.isNotEmpty) {
       setState(() {
         cameras = _cameras;
         cameraController = CameraController(
-          _cameras.first,
+          _cameras[currentCameraIndex],
           ResolutionPreset.high,
         );
       });
       cameraController?.initialize().then((_) {
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         setState(() {});
-      }).catchError(
-        (Object e) {
-          print(e);
-        },
-      );
+      }).catchError((Object e) {
+        print(e);
+      });
+    }
+  }
+
+  void _switchCamera() {
+    if (cameras.isNotEmpty) {
+      // Switch between the first and last camera
+      currentCameraIndex = (currentCameraIndex == 0) ? cameras.length - 1 : 0;
+      _setupCameraController();
     }
   }
 }

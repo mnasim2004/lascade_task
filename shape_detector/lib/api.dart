@@ -78,12 +78,13 @@
 //     return null;
 //   }
 // }
+//
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-Future<String?> sendImageAndReceiveOBJ(String imagePath) async {
+Future<String?> sendImageAndReceivePLB(String imagePath) async {
   final url = Uri.parse('https://lascade-task.onrender.com/process-image/');
 
   try {
@@ -100,15 +101,15 @@ Future<String?> sendImageAndReceiveOBJ(String imagePath) async {
       Uint8List bytes = await response.stream.toBytes();
       final directory = await getApplicationDocumentsDirectory();
       final filePath =
-          '${directory.path}/received_model.obj'; // Change extension to .obj
-      File objFile = File(filePath);
-      await objFile.writeAsBytes(bytes);
+          '${directory.path}/received_model.plb'; // Change extension to .plb
+      File plbFile = File(filePath);
+      await plbFile.writeAsBytes(bytes);
 
-      print('OBJ file saved at: $filePath');
-      return filePath; // Return the path to the saved OBJ file
+      print('PLB file saved at: $filePath');
+      return filePath; // Return the path to the saved PLB file
     } else {
       print(
-          'Error: Failed to get the OBJ file. Status code: ${response.statusCode}');
+          'Error: Failed to get the PLB file. Status code: ${response.statusCode}');
       return null;
     }
   } catch (e) {
