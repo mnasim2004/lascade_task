@@ -48,7 +48,9 @@ dependencies:
   # flutter_3d_obj: ^0.0.5
   # arkit_flutter_plugin: ^0.6.0
   # model_viewer_plus: ^1.8.0
-  arcore_flutter_plugin: ^0.1.0
+  # arcore_flutter_plugin: ^0.1.0
+  flutter_web_xr: ^0.0.2
+
 
 
   

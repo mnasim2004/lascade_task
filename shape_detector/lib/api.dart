@@ -78,13 +78,12 @@
 //     return null;
 //   }
 // }
-
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-Future<String?> sendImageAndReceiveSTL(String imagePath) async {
+Future<String?> sendImageAndReceiveOBJ(String imagePath) async {
   final url = Uri.parse('https://lascade-task.onrender.com/process-image/');
 
   try {
@@ -100,15 +99,16 @@ Future<String?> sendImageAndReceiveSTL(String imagePath) async {
     if (response.statusCode == 200) {
       Uint8List bytes = await response.stream.toBytes();
       final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/received_model.glb';
-      File glbFile = File(filePath);
-      await glbFile.writeAsBytes(bytes);
+      final filePath =
+          '${directory.path}/received_model.obj'; // Change extension to .obj
+      File objFile = File(filePath);
+      await objFile.writeAsBytes(bytes);
 
-      print('GLB file saved at: $filePath');
-      return filePath; // Return the path to the saved GLB file
+      print('OBJ file saved at: $filePath');
+      return filePath; // Return the path to the saved OBJ file
     } else {
       print(
-          'Error: Failed to get the GLB file. Status code: ${response.statusCode}');
+          'Error: Failed to get the OBJ file. Status code: ${response.statusCode}');
       return null;
     }
   } catch (e) {
