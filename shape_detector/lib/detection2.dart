@@ -116,39 +116,7 @@ class _Detection2State extends State<Detection2> with WidgetsBindingObserver {
     }
   }
 
-//   Future<void> _processImage(String imagePath) async {
-//     String? detectedEdgesPath;
-//     try {
-//       // Detect edges using edge_detection package
-//       detectedEdgesPath =
-//           (await EdgeDetection.detectEdge(imagePath)) as String?;
 
-//       if (detectedEdgesPath != null) {
-//         setState(() {
-//           _processedImageFile = File(detectedEdgesPath!);
-//         });
-//       }
-//     } catch (e) {
-//       print('Edge detection error: $e');
-//     }
-//   }
-// }
-
-// Future<void> _processImage(String imagePath) async {
-//   String? detectedPolygonPath;
-//   try {
-//     // Detect polygon using native code
-//     detectedPolygonPath = await PolygonDetector.detectPolygon(imagePath);
-
-//     if (detectedPolygonPath != null) {
-//       setState(() {
-//         _processedImageFile = File(detectedPolygonPath);
-//       });
-//     }
-//   } catch (e) {
-//     print('Polygon detection error: $e');
-//   }
-// }
 
   Future<void> _processImage(String imagePath) async {
     try {
